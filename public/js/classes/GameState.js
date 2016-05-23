@@ -9,7 +9,7 @@ class GameState {
   }
 
   removeActor(actor, callback) {
-    callback();
+    callback(actor.x, actor.y);
     this._actors.delete(actor);
   }
 

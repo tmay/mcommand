@@ -27,9 +27,9 @@ class HeroMissle extends Actor {
       if (this.areWeThereYet()) {
           this.isComplete = true;
       } else {
-        var factor = this.getEase((this[launchTime] - time), 0, 1, 2000);
-        this._x += (this._x - this._targetX) * factor;
-        this._y += (this._y - this._targetY) * factor;
+        var factor = this.getEase((time - this[launchTime]), 0, 1, 2000);
+        this._x -= (this._x - this._targetX) * factor;
+        this._y -= (this._y - this._targetY) * factor;
 
         ctx.beginPath()
         ctx.arc(this._x, this._y, this.radius, 0, 2 * Math.PI, true)

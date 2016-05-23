@@ -11,6 +11,7 @@ paused            = false
 metrics = null
 
 missleFactory = null;
+warheadFactory = null;
 stateEngine = new GameState();
 
 initModules = ->
@@ -21,6 +22,7 @@ initModules = ->
   scene.main.setup(ctx, metrics, colors)
   missleOrigin = new Point(metrics.center.x, metrics.height - metrics.cannonHeight);
   missleFactory = new MissleFactory(20).buildMissles(missleOrigin);
+  warheadFactory = new WarheadFactory(40).buildWarheads();
 
 initClickHandlers = ->
   ctx.canvas.addEventListener 'click', (event) ->
@@ -28,7 +30,15 @@ initClickHandlers = ->
     console.log missle
     if missle?
       missle.setTarget(event.clientX, event.clientY);
-      stateEngine.addActor(missle, -> missleFactory.recycle(missle));
+      stateEngine.addActor(missle, (x,y) ->
+        missleFactory.recycle(missle)
+        warhead = warheadFactory.requestWarhead();
+        warhead.setTarget(x,y);
+        stateEngine.addActor(warhead, (x,y) ->
+          console.log "that blowed up good";
+        );
+        warhead.explode();
+      );
       missle.launch();
 
 renderStatics = ->
