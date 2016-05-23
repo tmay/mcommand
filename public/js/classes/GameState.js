@@ -8,8 +8,8 @@ class GameState {
     this._actors.set(actor, callback);
   }
 
-  removeActor(actor) {
-    this._actors.get(actor)();
+  removeActor(actor, callback) {
+    callback();
     this._actors.delete(actor);
   }
 
@@ -17,7 +17,7 @@ class GameState {
     for (var entry of this._actors.entries()) {
       entry[0].draw(ctx, time);
       if (entry[0].isFinished) {
-          this.removeActor(entry[0]);
+          this.removeActor(entry[0], entry[1]);
       }
       //console.log (entry[0].toString());
     }
