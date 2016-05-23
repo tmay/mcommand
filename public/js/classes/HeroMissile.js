@@ -1,5 +1,5 @@
 var launchTime = Symbol();
-class HeroMissle extends Actor {
+class HeroMissile extends Actor {
   constructor(num, origin) {
     super();
     this.target = null;
@@ -91,6 +91,6 @@ class HeroMissle extends Actor {
   }
 
   toString() {
-    return "I'm missle"+this.serialNum+"; target: "+this._targetX+", "+this._targetY;
+    return "I'm missile"+this.serialNum+"; target: "+this._targetX+", "+this._targetY;
   }
 }

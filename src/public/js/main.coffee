@@ -10,7 +10,7 @@ fps               = 60
 paused            = false
 metrics = null
 
-missleFactory = null;
+missileFactory = null;
 warheadFactory = null;
 stateEngine = new GameState();
 
@@ -20,18 +20,18 @@ initModules = ->
   colors = scene.metrics.getColors()
   scene.bkg.setup(ctx, metrics, colors)
   scene.main.setup(ctx, metrics, colors)
-  missleOrigin = new Point(metrics.center.x, metrics.height - metrics.cannonHeight);
-  missleFactory = new MissleFactory(20).buildMissles(missleOrigin);
+  missileOrigin = new Point(metrics.center.x, metrics.height - metrics.cannonHeight);
+  missileFactory = new MissileFactory(20).buildMissiles(missileOrigin);
   warheadFactory = new WarheadFactory(40).buildWarheads();
 
 initClickHandlers = ->
   ctx.canvas.addEventListener 'click', (event) ->
-    missle = missleFactory.requestMissle();
-    console.log missle
-    if missle?
-      missle.setTarget(event.clientX, event.clientY);
-      stateEngine.addActor(missle, (x,y) ->
-        missleFactory.recycle(missle)
+    missile = missileFactory.requestMissile();
+    console.log missile
+    if missile?
+      missile.setTarget(event.clientX, event.clientY);
+      stateEngine.addActor(missile, (x,y) ->
+        missileFactory.recycle(missile)
         warhead = warheadFactory.requestWarhead();
         warhead.setTarget(x,y);
         stateEngine.addActor(warhead, (x,y) ->
@@ -39,7 +39,7 @@ initClickHandlers = ->
         );
         warhead.explode();
       );
-      missle.launch();
+      missile.launch();
 
 renderStatics = ->
   bkg_ctx.fillStyle = "#000"
