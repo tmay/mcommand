@@ -53,11 +53,14 @@
           var warhead;
           missileFactory.recycle(missile);
           warhead = warheadFactory.requestWarhead();
-          warhead.setTarget(x, y);
-          stateEngine.addActor(warhead, function(x, y) {
-            return console.log("that blowed up good");
-          });
-          return warhead.explode();
+          if (warhead != null) {
+            warhead.setTarget(x, y);
+            stateEngine.addActor(warhead, function(x, y) {
+              warheadFactory.recycle(warhead);
+              return console.log("that blowed up good");
+            });
+            return warhead.explode();
+          }
         });
         return missile.launch();
       }

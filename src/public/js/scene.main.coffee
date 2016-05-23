@@ -38,6 +38,7 @@ namespace "scene.main", (exports) ->
 
   drawCannon = (ctx) ->
     cannonWidth = (metrics.width * cannonWidthPercentage) / 100
+    ctx.fillStyle = "#FFFFFF"
     ctx.fillRect(metrics.center.x - (cannonWidth/2), metrics.ground-metrics.cannonHeight, cannonWidth, metrics.cannonHeight)
 
   drawGuides = (ctx) ->

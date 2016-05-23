@@ -38,6 +38,7 @@
     drawCannon = function(ctx) {
       var cannonWidth;
       cannonWidth = (metrics.width * cannonWidthPercentage) / 100;
+      ctx.fillStyle = "#FFFFFF";
       return ctx.fillRect(metrics.center.x - (cannonWidth / 2), metrics.ground - metrics.cannonHeight, cannonWidth, metrics.cannonHeight);
     };
     return drawGuides = function(ctx) {

@@ -33,11 +33,13 @@ initClickHandlers = ->
       stateEngine.addActor(missile, (x,y) ->
         missileFactory.recycle(missile)
         warhead = warheadFactory.requestWarhead();
-        warhead.setTarget(x,y);
-        stateEngine.addActor(warhead, (x,y) ->
-          console.log "that blowed up good";
-        );
-        warhead.explode();
+        if warhead?
+          warhead.setTarget(x,y);
+          stateEngine.addActor(warhead, (x,y) ->
+            warheadFactory.recycle(warhead);
+            console.log "that blowed up good";
+          );
+          warhead.explode();
       );
       missile.launch();
 
