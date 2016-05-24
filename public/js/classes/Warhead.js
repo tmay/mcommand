@@ -7,6 +7,7 @@ class Warhead extends Actor {
     super();
     this.serial = num;
     this.radius = 1;
+    this.maxRadius = 25;
     this.x = 0;
     this.y = 0;
     this.isComplete = false;
@@ -29,11 +30,11 @@ class Warhead extends Actor {
       if (elapsed > this[totalTime]) {
         this.isComplete = true;
       } else if (elapsed > this[stageTwoTime]) {
-        this.radius = this.getStage1Ease(elapsed, 1, 50, this[stageTwoTime]);
+        this.radius = this.getStage1Ease(elapsed, 1, this.maxRadius, this[stageTwoTime]);
       } else if (elapsed < this[stageOneTime]) {
         // this.radius -= (this.radius - 50) *
         //   this.getStage1Ease(elapsed, 0,1,this[stageOneTime]);
-        this.radius = this.getStage1Ease(elapsed, 1, 50,this[stageOneTime]);
+        this.radius = this.getStage1Ease(elapsed, 1, this.maxRadius, this[stageOneTime]);
       }
 
       ctx.beginPath();
