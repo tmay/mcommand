@@ -16,49 +16,73 @@ class HeroMissile extends Actor {
     this.color2 = "#ffff00";
     this.lastTime = 0;
     this.dist = 0;
+    //
+    this._vx = 0;
+    this._vy = 0;
+    this._force = 0.05;
   }
 
   get isFinished() {
       return this.isComplete;
   }
 
-  draw(ctx, time) {
-      super.draw(ctx,time);
-      var elapsed = time - this[launchTime];
-      if (this.areWeThereYet()) {
-          this.isComplete = true;
-      } else {
-        var factor = this.getEase(elapsed, 0.1, 1, 2000);
-        this._x -= (this._x - this._targetX) * factor;
-        this._y -= (this._y - this._targetY) * factor;
+  draw (ctx, time) {
+    var elapsed = time - this[launchTime];
+    if (this.distance(this._x, this._y, this._targetX, this._targetY) > 5) {
+      var dx = this._targetX - this._x;
+      var dy = this._targetY - this._y;
+      var angle = Math.atan2(dy,dx);
 
-        ctx.beginPath()
-        ctx.arc(this._x, this._y, this.radius, 0, 2 * Math.PI, true)
-        var color = this.color1;
-        if (elapsed - this.lastTime > 100) {
-          color = this.color2;
-          this.lastTime = elapsed;
-        }
-        ctx.fillStyle = color;
-        ctx.fill()
+      var ax = Math.cos(angle) * this._force;
+      var ay = Math.sin(angle) * this._force;
 
+      this._vx += ax;
+      this._vy += ay;
+      this._x += this._vx;
+      this._y += this._vy;
+
+
+      ctx.beginPath();
+      ctx.arc(this._x, this._y, this.radius, 0, 2 * Math.PI, true);
+      var color = this.color1;
+      if (elapsed - this.lastTime > 100) {
+        color = this.color2;
+        this.lastTime = elapsed;
       }
+      ctx.fillStyle = color;
+      ctx.fill();
+    } else {
+      this.isComplete = true;
+    }
   }
+
+  // draw(ctx, time) {
+  //     super.draw(ctx,time);
+  //     var elapsed = time - this[launchTime];
+  //     if (this.areWeThereYet()) {
+  //         this.isComplete = true;
+  //     } else {
+  //       var factor = this.getEase(elapsed, 0, 1, 2000);
+  //       this._x -= (this._x - this._targetX) * factor;
+  //       this._y -= (this._y - this._targetY) * factor;
+  //
+  //       ctx.beginPath()
+  //       ctx.arc(this._x, this._y, this.radius, 0, 2 * Math.PI, true)
+  //       var color = this.color1;
+  //       if (elapsed - this.lastTime > 100) {
+  //         color = this.color2;
+  //         this.lastTime = elapsed;
+  //       }
+  //       ctx.fillStyle = color;
+  //       ctx.fill()
+  //
+  //     }
+  // }
 
   distance(x1, y1, x2, y2) {
       var dx = x2 - x1;
       var dy = y2 - y1;
       return Math.sqrt(dx*dx+dy*dy);
-  }
-
-  areWeThereYet() {
-      return (this.x === this._targetX && this.y === this._targetY)
-  }
-
-  getEase(t, b, c, d) {
-    var ts =(t/=d)*t;
-    var tc =ts*t;
-    return b+c*(tc*ts);
   }
 
   get serialNum() {
@@ -82,7 +106,7 @@ class HeroMissile extends Actor {
   setTarget(x,y) {
     this._targetX = x;
     this._targetY = y;
-    this.dist = this.distance(this.x, this.y, x, y);
+    //this.dist = this.distance(this.x, this.y, x, y);
   }
 
   get launchTime() {
@@ -102,6 +126,9 @@ class HeroMissile extends Actor {
     this._y = this.originPoint.y;
     this[launchTime] = 0;
     this.lastTime = 0;
+    this._vx = 0;
+    this._vy = 0;
+    this._force = 0.05;
   }
 
   toString() {
