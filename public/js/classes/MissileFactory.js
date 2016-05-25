@@ -10,6 +10,7 @@ class MissileFactory {
     for (var i=0;i<this._stockpile.length;i++) {
       this._stockpile[i] = new HeroMissile(i, origin);
       this._tracker[i] = 1;
+      this.origin = origin;
     }
     return this;
   }
@@ -26,7 +27,7 @@ class MissileFactory {
 
   recycle(missile) {
     console.log("recycling "+missile);
-    missile.reset();
+    missile.reset(null, this.origin);
     this._tracker[missile.serialNum] = 1;
   }
 

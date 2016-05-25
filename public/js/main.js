@@ -37,7 +37,7 @@
     colors = scene.metrics.getColors();
     scene.bkg.setup(ctx, metrics, colors);
     scene.main.setup(ctx, metrics, colors);
-    missileOrigin = new Point(metrics.center.x, metrics.height - metrics.cannonHeight);
+    missileOrigin = new Point(metrics.center.x, metrics.height - (metrics.cannonHeight * 2));
     missileFactory = new MissileFactory(20).buildMissiles(missileOrigin);
     return warheadFactory = new WarheadFactory(40).buildWarheads();
   };

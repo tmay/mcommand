@@ -2,24 +2,10 @@ var launchTime = Symbol();
 class HeroMissile extends Actor {
   constructor(num, origin) {
     super();
-    this.target = null;
     this.serial = num;
     this.originPoint = origin;
-    this._targetX = 0;
-    this._targetY = 0;
-    this._x = origin.x;
-    this._y = origin.y;
-    this.radius = 2;
-    this.isComplete = false;
-    this[launchTime] = 0;
-    this.color1 = "#ff2a3a";
-    this.color2 = "#ffff00";
-    this.lastTime = 0;
-    this.dist = 0;
-    //
-    this._vx = 0;
-    this._vy = 0;
-    this._force = 0.05;
+    this.orig
+    this.reset(origin);
   }
 
   get isFinished() {
@@ -28,7 +14,14 @@ class HeroMissile extends Actor {
 
   draw (ctx, time) {
     var elapsed = time - this[launchTime];
-    if (this.distance(this._x, this._y, this._targetX, this._targetY) > 5) {
+    if (elapsed < 500) {
+      this._force = 0.05
+    } else  if (elapsed > 500 && elapsed < 1000){
+      this._force = 0.01
+    } else if (elapsed > 1000){
+      this._force = 0.25
+    }
+    if (this.distance(this._x, this._y, this._targetX, this._targetY) > 10) {
       var dx = this._targetX - this._x;
       var dy = this._targetY - this._y;
       var angle = Math.atan2(dy,dx);
@@ -55,29 +48,6 @@ class HeroMissile extends Actor {
       this.isComplete = true;
     }
   }
-
-  // draw(ctx, time) {
-  //     super.draw(ctx,time);
-  //     var elapsed = time - this[launchTime];
-  //     if (this.areWeThereYet()) {
-  //         this.isComplete = true;
-  //     } else {
-  //       var factor = this.getEase(elapsed, 0, 1, 2000);
-  //       this._x -= (this._x - this._targetX) * factor;
-  //       this._y -= (this._y - this._targetY) * factor;
-  //
-  //       ctx.beginPath()
-  //       ctx.arc(this._x, this._y, this.radius, 0, 2 * Math.PI, true)
-  //       var color = this.color1;
-  //       if (elapsed - this.lastTime > 100) {
-  //         color = this.color2;
-  //         this.lastTime = elapsed;
-  //       }
-  //       ctx.fillStyle = color;
-  //       ctx.fill()
-  //
-  //     }
-  // }
 
   distance(x1, y1, x2, y2) {
       var dx = x2 - x1;
@@ -117,18 +87,23 @@ class HeroMissile extends Actor {
       this[launchTime] = new Date().getTime();
   }
 
-  reset() {
+  reset(origin) {
     this.target = null;
     this._targetX = 0;
     this._targetY = 0;
-    this.isComplete = false;
     this._x = this.originPoint.x;
     this._y = this.originPoint.y;
+    this.radius = 2;
+    this.isComplete = false;
     this[launchTime] = 0;
+    this.color1 = "#ff2a3a";
+    this.color2 = "#ffff00";
     this.lastTime = 0;
+    this.dist = 0;
+    //
     this._vx = 0;
     this._vy = 0;
-    this._force = 0.05;
+    this._force = 0.15;
   }
 
   toString() {
